@@ -65,7 +65,7 @@ mod module_data {
 
         assert_eq!(mdata.import_functions().len(), 2);
         assert_eq!(mdata.export_functions().len(), 2);
-        assert_eq!(mdata.function_info().len(), 4);
+        assert_eq!(mdata.function_info().len(), 5);
         // This ordering is actually arbitrary. Cranelift hoists additional declaration modifiers
         // up to the function declaration. This means inc comes first, and main second, in
         // `exported_import.wat`.
@@ -84,7 +84,7 @@ mod module_data {
 
         assert_eq!(mdata.import_functions().len(), 2);
         assert_eq!(mdata.export_functions().len(), 1);
-        assert_eq!(mdata.function_info().len(), 4);
+        assert_eq!(mdata.function_info().len(), 5);
         assert_eq!(mdata.export_functions()[0].names, vec!["exported_inc"]);
     }
 
@@ -101,7 +101,7 @@ mod module_data {
 
         assert_eq!(mdata.import_functions().len(), 0);
         assert_eq!(mdata.export_functions().len(), 0);
-        assert_eq!(mdata.function_info().len(), 2);
+        assert_eq!(mdata.function_info().len(), 3);
     }
 
     #[test]
@@ -114,7 +114,7 @@ mod module_data {
         assert_eq!(mdata.globals_spec().len(), 0);
 
         assert_eq!(mdata.import_functions().len(), 0);
-        assert_eq!(mdata.function_info().len(), 3);
+        assert_eq!(mdata.function_info().len(), 4);
         assert_eq!(mdata.export_functions()[0].names, vec!["main"]);
     }
 
@@ -128,7 +128,7 @@ mod module_data {
         assert_eq!(mdata.globals_spec().len(), 0);
 
         assert_eq!(mdata.import_functions().len(), 0);
-        assert_eq!(mdata.function_info().len(), 3);
+        assert_eq!(mdata.function_info().len(), 4);
         assert_eq!(mdata.export_functions()[0].names, vec!["main"]);
     }
 
@@ -148,7 +148,7 @@ mod module_data {
         assert_eq!(mdata.import_functions()[0].name, "read");
         assert_eq!(mdata.import_functions()[1].module, "env");
         assert_eq!(mdata.import_functions()[1].name, "write");
-        assert_eq!(mdata.function_info().len(), 5);
+        assert_eq!(mdata.function_info().len(), 6);
         assert_eq!(mdata.function_info()[0].name, Some("host_read"));
         assert_eq!(mdata.function_info()[1].name, Some("host_write"));
         assert_eq!(mdata.function_info()[2].name, Some("guest_func__start"));
@@ -172,7 +172,7 @@ mod module_data {
         assert_eq!(mdata.import_functions().len(), 1);
         assert_eq!(mdata.import_functions()[0].module, "env");
         assert_eq!(mdata.import_functions()[0].name, "icalltarget");
-        assert_eq!(mdata.function_info().len(), 7);
+        assert_eq!(mdata.function_info().len(), 8);
         assert_eq!(mdata.export_functions()[0].names, vec!["launchpad"]);
         assert_eq!(mdata.globals_spec().len(), 0);
 
@@ -394,7 +394,7 @@ mod module_data {
 
         assert_eq!(mdata.import_functions().len(), 0);
         assert_eq!(mdata.export_functions().len(), 0);
-        assert_eq!(mdata.function_info().len(), 3);
+        assert_eq!(mdata.function_info().len(), 4);
         assert_eq!(
             mdata.function_info().get(0).unwrap().name,
             Some("func_name_0")
