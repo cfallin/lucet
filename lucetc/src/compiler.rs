@@ -273,7 +273,21 @@ impl<'a> Compiler<'a> {
                 let func = decls
                     .get_func(unique_func_ix)
                     .expect("decl exists for func body");
-                let mut func_info = FuncInfo::new(&decls, &codegen_context, count_instructions);
+                let arg_count = func.signature.params.len() as u32;
+                let local_count = func_body
+                    .get_locals_reader()
+                    .map_err(|source| Error::FunctionTranslation {
+                        symbol: func.name.symbol().to_string(),
+                        source: Box::new(Error::from(source)),
+                    })?
+                    .get_count();
+                let mut func_info = FuncInfo::new(
+                    &decls,
+                    &codegen_context,
+                    count_instructions,
+                    arg_count,
+                    local_count,
+                );
                 let mut clif_context = ClifContext::new();
                 clif_context.func.name = func.name.as_externalname();
                 clif_context.func.signature = func.signature.clone();
@@ -450,8 +464,21 @@ impl<'a> Compiler<'a> {
                 .decls
                 .get_func(unique_func_ix)
                 .expect("decl exists for func body");
-            let mut func_info =
-                FuncInfo::new(&self.decls, &self.codegen_context, self.count_instructions);
+            let arg_count = func.signature.params.len() as u32;
+            let local_count = body
+                .get_locals_reader()
+                .map_err(|source| Error::FunctionTranslation {
+                    symbol: func.name.symbol().to_string(),
+                    source: Box::new(Error::from(source)),
+                })?
+                .get_count();
+            let mut func_info = FuncInfo::new(
+                &self.decls,
+                &self.codegen_context,
+                self.count_instructions,
+                arg_count,
+                local_count,
+            );
             let mut clif_context = ClifContext::new();
             clif_context.func.name = func.name.as_externalname();
             clif_context.func.signature = func.signature.clone();
